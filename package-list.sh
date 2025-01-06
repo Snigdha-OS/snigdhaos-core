@@ -6,7 +6,7 @@
 # Date: 2024-12-27
 # Description: This script fetches the list of package filenames
 # from a specified GitHub repository and processes them into a clean output.
-# It also removes duplicate package names.
+# It also removes duplicate package names and version info.
 #-----------------------------------------------------------
 
 # GitHub API URL for the directory
@@ -15,35 +15,46 @@ repo_url="https://api.github.com/repos/Snigdha-OS/snigdhaos-core/contents/x86_64
 # Output file
 output_file="packages.txt"
 
-# Function to install curl if not installed (for Arch Linux)
-install_curl() {
-    echo "curl is not installed. Attempting to install..."
+# Function to check if a command is available
+command_check() {
+    command -v "$1" &> /dev/null
+}
+
+# Function to install a package if not installed (for Arch Linux)
+install_package() {
+    package="$1"
+    echo "$package is not installed. Attempting to install..."
 
     # Check if the system is using the pacman package manager (Arch Linux)
-    if command -v pacman &> /dev/null; then
-        sudo pacman -Sy --noconfirm curl
+    if command_check "pacman"; then
+        sudo pacman -Sy --noconfirm "$package"
     else
-        echo "Error: Could not detect pacman package manager. Please install curl manually."
+        echo "Error: Could not detect pacman package manager. Please install $package manually."
         exit 1
     fi
 
-    # Verify if curl was successfully installed
-    if command -v curl &> /dev/null; then
-        echo "curl has been installed successfully."
+    # Verify if the package was successfully installed
+    if command_check "$package"; then
+        echo "$package has been installed successfully."
     else
-        echo "Error: Failed to install curl. Please install it manually."
+        echo "Error: Failed to install $package. Please install it manually."
         exit 1
     fi
 }
 
-# Function to fetch and process the package list (only package names, with duplicates removed)
+# Function to fetch and process the package list (only package names, with duplicates removed and version removed)
 fetch_packages() {
-    # Check if curl is installed
-    if ! command -v curl &> /dev/null; then
-        install_curl
+    # Ensure curl and jq are installed
+    if ! command_check "curl"; then
+        install_package "curl"
     fi
 
-    # Fetch the directory content from the GitHub API, extract package names, remove duplicates
+    if ! command_check "jq"; then
+        install_package "jq"
+    fi
+
+    # Fetch the directory content from the GitHub API, extract package names, remove version and duplicates
+    echo "Fetching package list from GitHub repository..."
     curl -s "$repo_url" | \
     jq -r '.[].name' | \
     grep -oP '^[^/]+(?=-[0-9]+-[a-z0-9]+\.pkg\.tar\.zst)' | \
@@ -52,12 +63,12 @@ fetch_packages() {
 
     # Check if the output file is generated successfully
     if [[ $? -eq 0 ]]; then
-        echo "Generated $output_file with package names (duplicates removed)."
+        echo "Generated $output_file with package names (duplicates and versions removed)."
     else
         echo "Error: Failed to generate the package list."
         exit 1
     fi
 }
 
-# Run the function
+# Run the function to fetch and process packages
 fetch_packages
