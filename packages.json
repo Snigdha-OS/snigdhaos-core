@@ -1,0 +1,49 @@
+[
+    {
+        "name": "snigdhaos-asian-fonts",
+        "version": "r363.926bf4d8",
+        "description": "Meta-package containing common asian fonts"
+    },
+
+    {
+        "name": "snigdhaos-grub-theme",
+        "version": "r15.3e36d6c",
+        "description": "Grub Theme For Snigdha OS"
+    },
+
+    {
+        "name": "snigdhaos-keyring",
+        "version": "r332.68a02606",
+        "description": "Keyring for Snigdha OS."
+    },
+
+    {
+        "name": "snigdhaos-libs",
+        "version": "r345.8a191fb0",
+        "description": "Libs for Snigdha OS"
+    },
+
+    {
+        "name": "snigdhaos-lsb-release",
+        "version": "2.0.r55.a25a4fc",
+        "description": "LSB version query program for Snigdha OS"
+    },
+
+    {
+        "name": "snigdhaos-mirrorlist",
+        "version": "r331.bdb761c5",
+        "description": "Snigdha OS mirrorlist."
+    },
+
+    {
+        "name": "snigdhaos-sddm-sugar-candy",
+        "version": "r1.3dabe46",
+        "description": "Sugar Candy is the sweetest login theme available for the SDDM display manager."
+    },
+
+    {
+        "name": "snigdhaos-welcome",
+        "version": "r64.4e7eba2",
+        "description": "Snigdha OS Welcome App"
+    }
+]
