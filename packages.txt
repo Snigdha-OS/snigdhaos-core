@@ -1,8 +1,0 @@
-snigdhaos-asian-fonts
-snigdhaos-grub-theme
-snigdhaos-keyring
-snigdhaos-libs
-snigdhaos-lsb-release
-snigdhaos-mirrorlist
-snigdhaos-sddm-sugar-candy
-snigdhaos-welcome
